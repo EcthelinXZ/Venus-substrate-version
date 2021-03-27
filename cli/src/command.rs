@@ -83,6 +83,7 @@ impl SubstrateCli for Cli {
 			"polkadot" => Box::new(service::chain_spec::polkadot_config()?),
 			"westend" => Box::new(service::chain_spec::westend_config()?),
 			"kusama" => Box::new(service::chain_spec::kusama_config()?),
+			"venus" => Box::new(service::chain_spec::venus_config()?),
 			"venus-dev" => Box::new(service::chain_spec::venus_development_config()?),
 			"westend-dev" => Box::new(service::chain_spec::westend_development_config()?),
 			"westend-local" => Box::new(service::chain_spec::westend_local_testnet_config()?),
@@ -105,7 +106,7 @@ impl SubstrateCli for Cli {
 					Box::new(service::KusamaChainSpec::from_json_file(path)?)
 				} else if self.run.force_westend || starts_with("westend") {
 					Box::new(service::WestendChainSpec::from_json_file(path)?)
-				} else if self.run.force_westend || starts_with("westend") {
+				} else if self.run.force_westend || starts_with("venus") {
 					Box::new(service::VenusChainSpec::from_json_file(path)?)
 				} else {
 					Box::new(service::PolkadotChainSpec::from_json_file(path)?)

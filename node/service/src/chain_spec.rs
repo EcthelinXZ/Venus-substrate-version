@@ -108,7 +108,7 @@ pub fn westend_config() -> Result<PolkadotChainSpec, String> {
 	PolkadotChainSpec::from_json_bytes(&include_bytes!("../res/westend.json")[..])
 }
 
-pub fn westend_config() -> Result<PolkadotChainSpec, String> {
+pub fn venus_config() -> Result<PolkadotChainSpec, String> {
 	PolkadotChainSpec::from_json_bytes(&include_bytes!("../res/venus.json")[..])
 }
 
@@ -1102,13 +1102,13 @@ pub fn westend_staging_testnet_config() -> Result<WestendChainSpec, String> {
 	))
 }
 
-pub fn westend_staging_testnet_config() -> Result<VenusChainSpec, String> {
-	let wasm_binary = westend::WASM_BINARY.ok_or("Westend development wasm not available")?;
+pub fn venus_staging_testnet_config() -> Result<VenusChainSpec, String> {
+	let wasm_binary = westend::WASM_BINARY.ok_or("venus development wasm not available")?;
 	let boot_nodes = vec![];
 
 	Ok(VenusChainSpec::from_genesis(
-		"Westend Staging Testnet",
-		"westend_staging_testnet",
+		"Venus Staging Testnet",
+		"Venus_staging_testnet",
 		ChainType::Live,
 		move || westend_staging_testnet_config_genesis(wasm_binary),
 		boot_nodes,
@@ -1651,7 +1651,7 @@ fn westend_development_config_genesis(wasm_binary: &[u8]) -> westend::GenesisCon
 	)
 }
 
-fn venus_config_genesis(wasm_binary: &[u8]) -> wenstend::GenesisConfig {
+fn venus_development_config_genesis(wasm_binary: &[u8]) -> westend::GenesisConfig {
 	westend_testnet_genesis(
 		wasm_binary,
 		vec![get_authority_keys_from_seed("Alice")],
@@ -1719,7 +1719,7 @@ pub fn venus_development_config() -> Result<VenusChainSpec, String> {
 		"Development",
 		"venus",
 		ChainType::Development,
-		move || venus_genesis(wasm_binary),
+		move || venus_development_config_genesis(wasm_binary),
 		vec![],
 		None,
 		Some(DEFAULT_PROTOCOL_ID),
@@ -1799,6 +1799,18 @@ fn westend_local_testnet_genesis(wasm_binary: &[u8]) -> westend::GenesisConfig {
 	)
 }
 
+fn venus_local_testnet_genesis(wasm_binary: &[u8]) -> westend::GenesisConfig {
+	westend_testnet_genesis(
+		wasm_binary,
+		vec![
+			get_authority_keys_from_seed("Alice"),
+			get_authority_keys_from_seed("Bob"),
+		],
+		get_account_id_from_seed::<sr25519::Public>("Alice"),
+		None,
+	)
+}
+
 /// Westend local testnet config (multivalidator Alice + Bob)
 pub fn westend_local_testnet_config() -> Result<WestendChainSpec, String> {
 	let wasm_binary = westend::WASM_BINARY.ok_or("Westend development wasm not available")?;
@@ -1816,14 +1828,14 @@ pub fn westend_local_testnet_config() -> Result<WestendChainSpec, String> {
 	))
 }
 
-pub fn Venus_local_testnet_config() -> Result<VenusChainSpec, String> {
+pub fn venus_local_testnet_config() -> Result<VenusChainSpec, String> {
 	let wasm_binary = westend::WASM_BINARY.ok_or("Westend development wasm not available")?;
 
 	Ok(VenusChainSpec::from_genesis(
-		"Westend Local Testnet",
-		"westend_local_testnet",
+		"Venus Local Testnet",
+		"Venus_local_testnet",
 		ChainType::Local,
-		move || westend_local_testnet_genesis(wasm_binary),
+		move || venus_local_testnet_genesis(wasm_binary),
 		vec![],
 		None,
 		Some(DEFAULT_PROTOCOL_ID),
